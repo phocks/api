@@ -7,6 +7,9 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 
+mod email;
+use email::email;
+
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();
@@ -23,5 +26,6 @@ async fn main() {
 }
 
 async fn root() -> &'static str {
-    "Hello, World!"
+    email();
+    return "Hello, World!";
 }
