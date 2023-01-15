@@ -1,10 +1,17 @@
 #![allow(unused)]
 
+#[macro_use]
+extern crate dotenv_codegen;
+
 mod get_token;
 use get_token::{ get_token };
 
 use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
 use serde_json::json;
+
+use dotenv::dotenv;
+use std::env;
+
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -29,6 +36,14 @@ async fn manual_hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+  dotenv().ok();
+
+  for (key, value) in env::vars() {
+      println!("{}: {}", key, value);
+  }
+
+  // println!("{}", dotenv!("SECRET"));
+  
   HttpServer::new(|| {
     App::new().service(hello).service(echo).route("/hey", web::get().to(manual_hello))
   })

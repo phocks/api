@@ -31,6 +31,7 @@ pub fn get_token() -> std::string::String {
   };
 
   // println!("token: {:?}", token);
+  println!("{}", dotenv!("SECRET"));
 
   return token;
 }
