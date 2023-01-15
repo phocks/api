@@ -2,6 +2,9 @@ use chrono::{ Duration, Utc };
 use jsonwebtoken::{ decode, encode, DecodingKey, EncodingKey, Header, Validation };
 use serde::{ Deserialize, Serialize };
 
+#[macro_use]
+use dotenv_codegen::dotenv as dotenv_codegen;
+
 #[derive(Deserialize, Serialize, Debug)]
 struct Claims {
   sub: String,
@@ -10,8 +13,10 @@ struct Claims {
   email: String,
 }
 
-pub fn get_token() -> std::string::String {
-  let key = b"a secret code";
+pub fn get_token(email: &String) -> std::string::String {
+  let bytes_secret = dotenv_codegen!("SECRET").as_bytes();
+
+  let key = bytes_secret;
   let my_iat = Utc::now().timestamp();
   let my_exp = Utc::now()
     .checked_add_signed(Duration::days(365))
@@ -22,16 +27,13 @@ pub fn get_token() -> std::string::String {
     sub: "h@d.com".to_owned(),
     iat: my_iat as usize,
     exp: my_exp as usize,
-    email: "phocks@gmail.com".to_owned(),
+    email: email.to_owned(),
   };
 
   let token = match encode(&Header::default(), &my_claims, &EncodingKey::from_secret(key)) {
     Ok(t) => t,
     Err(_) => panic!(),
   };
-
-  // println!("token: {:?}", token);
-  println!("{}", dotenv!("SECRET"));
 
   return token;
 }

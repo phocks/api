@@ -1,8 +1,5 @@
 #![allow(unused)]
 
-#[macro_use]
-extern crate dotenv_codegen;
-
 mod get_token;
 use get_token::{ get_token };
 
@@ -15,8 +12,8 @@ use std::env;
 
 #[get("/")]
 async fn hello() -> impl Responder {
-  // let token = get_token();
-  let token: String = get_token();
+  let email = String::from("no-reply@gmail.com");
+  let token: String = get_token(&email);
 
   let data = json!({
         "jwt": token,
@@ -38,9 +35,9 @@ async fn manual_hello() -> impl Responder {
 async fn main() -> std::io::Result<()> {
   dotenv().ok();
 
-  for (key, value) in env::vars() {
-      println!("{}: {}", key, value);
-  }
+  // for (key, value) in env::vars() {
+  //     println!("{}: {}", key, value);
+  // }
 
   // println!("{}", dotenv!("SECRET"));
   
