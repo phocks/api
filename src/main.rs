@@ -28,7 +28,7 @@ async fn root() -> impl Responder {
 
 #[derive(Deserialize, Debug)]
 struct MyQuery {
-    username: String,
+  username: String,
 }
 
 #[get("/get-jwt")]
@@ -41,8 +41,6 @@ async fn get_jwt(query: web::Query<MyQuery>) -> impl Responder {
     "username": username,
     "jwt": token,
     });
-
-    println!("Query parameters: {:?}", query);
 
   HttpResponse::Ok().json(return_data)
 }
