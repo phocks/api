@@ -1,8 +1,6 @@
 use chrono::{ Duration, Utc };
 use jsonwebtoken::{ decode, encode, DecodingKey, EncodingKey, Header, Validation };
 use serde::{ Deserialize, Serialize };
-
-#[macro_use]
 use dotenv_codegen::dotenv as dotenv_codegen;
 
 #[derive(Deserialize, Serialize, Debug)]
