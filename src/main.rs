@@ -4,6 +4,7 @@ mod get_token;
 // mod email;
 use get_token::{ get_token };
 
+use actix_cors::Cors;
 use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
 use serde_json::json;
 use serde::{ Deserialize };
@@ -57,7 +58,11 @@ async fn main() -> std::io::Result<()> {
   println!("Attempting to listen on http://localhost:3000");
 
   HttpServer::new(|| {
-    App::new().service(root).service(echo).service(get_jwt)
+    App::new()
+      .wrap(Cors::permissive())
+      .service(root)
+      .service(echo)
+      .service(get_jwt)
   })
     .bind(("0.0.0.0", 3000))?
     .run().await
