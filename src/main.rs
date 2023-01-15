@@ -1,45 +1,19 @@
-// mod email;
-// use email::email;
-use chrono::{ Duration, Utc };
-use jsonwebtoken::{ decode, encode, DecodingKey, EncodingKey, Header, Validation };
-use serde::{ Deserialize, Serialize };
-use serde_json::json;
-use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
+#![allow(unused)]
 
-#[derive(Deserialize, Serialize, Debug)]
-struct Claims {
-  sub: String,
-  iat: usize,
-  exp: usize,
-  test: String,
-}
+mod get_token;
+use get_token::{ get_token };
+
+use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
+use serde_json::json;
 
 #[get("/")]
 async fn hello() -> impl Responder {
-  let key = b"a secret code";
-  let my_iat = Utc::now().timestamp();
-  let my_exp = Utc::now()
-    .checked_add_signed(Duration::days(365))
-    .expect("invalid timestamp")
-    .timestamp();
-
-  let my_claims = Claims {
-    sub: "h@d.com".to_owned(),
-    iat: my_iat as usize,
-    exp: my_exp as usize,
-    test: "hello world".to_owned(),
-  };
-
-  let token = match encode(&Header::default(), &my_claims, &EncodingKey::from_secret(key)) {
-    Ok(t) => t,
-    Err(_) => panic!(),
-  };
-
-  // println!("token: {:?}", token);
+  // let token = get_token();
+  let token: String = get_token();
 
   let data = json!({
-    "jwt": token,
-});
+        "jwt": token,
+    });
 
   HttpResponse::Ok().json(data)
 }
