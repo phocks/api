@@ -8,10 +8,10 @@ struct Claims {
   sub: String,
   iat: usize,
   exp: usize,
-  email: String,
+  username: String,
 }
 
-pub fn get_token(email: &String) -> std::string::String {
+pub fn get_token(username: &String) -> std::string::String {
   let bytes_secret = dotenv_codegen!("SECRET").as_bytes();
 
   let key = bytes_secret;
@@ -22,10 +22,10 @@ pub fn get_token(email: &String) -> std::string::String {
     .timestamp();
 
   let my_claims = Claims {
-    sub: "h@d.com".to_owned(),
+    sub: "auth".to_string(),
     iat: my_iat as usize,
     exp: my_exp as usize,
-    email: email.to_owned(),
+    username: username.to_string(),
   };
 
   let token = match encode(&Header::default(), &my_claims, &EncodingKey::from_secret(key)) {

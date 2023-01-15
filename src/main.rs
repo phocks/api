@@ -1,11 +1,12 @@
 #![allow(unused)]
 
 mod get_token;
-mod email;
+// mod email;
 use get_token::{ get_token };
 
 use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
 use serde_json::json;
+use serde::{ Deserialize };
 
 use dotenv::dotenv;
 use std::env;
@@ -25,15 +26,23 @@ async fn root() -> impl Responder {
   HttpResponse::Ok().json(return_data)
 }
 
+#[derive(Deserialize, Debug)]
+struct MyQuery {
+    username: String,
+}
+
 #[get("/get-jwt")]
-async fn get_jwt() -> impl Responder {
-  let email: String = String::from("no-reply@gmail.com");
-  let token: String = get_token(&email);
+async fn get_jwt(query: web::Query<MyQuery>) -> impl Responder {
+  // let email: String = String::from("no-reply@gmail.com");
+  let username: String = query.username.to_string();
+  let token: String = get_token(&username);
 
   let return_data = json!({
-    "email" : email,
+    "username": username,
     "jwt": token,
     });
+
+    println!("Query parameters: {:?}", query);
 
   HttpResponse::Ok().json(return_data)
 }
@@ -46,6 +55,8 @@ async fn echo(req_body: String) -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
   dotenv().ok();
+
+  println!("Attempting to listen on http://localhost:3000");
 
   HttpServer::new(|| {
     App::new().service(root).service(echo).service(get_jwt)
