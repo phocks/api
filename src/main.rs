@@ -1,6 +1,7 @@
 #![allow(unused)]
 
 mod get_token;
+mod email;
 use get_token::{ get_token };
 
 use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
