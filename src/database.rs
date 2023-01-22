@@ -1,5 +1,7 @@
 use futures::executor::block_on;
-use sea_orm::{ Database, DbErr };
+
+use crate::entities::{ prelude::*, * };
+use sea_orm::*;
 
 // Change this according to your database implementation,
 // or supply it as an environment variable.
@@ -11,6 +13,13 @@ const DB_NAME: &str = "bakeries_db";
 
 async fn run() -> Result<(), DbErr> {
   let db = Database::connect(DATABASE_URL).await?;
+
+  let happy_bakery = bakery::ActiveModel {
+    name: ActiveValue::Set("Happy Bakery".to_owned()),
+    profit_margin: ActiveValue::Set(0.0),
+    ..Default::default()
+  };
+  let res = Bakery::insert(happy_bakery).exec(&db).await?;
 
   Ok(())
 }
