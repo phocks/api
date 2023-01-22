@@ -1,5 +1,12 @@
 use chrono::{ Duration, Utc };
-use jsonwebtoken::{ decode, encode, DecodingKey, EncodingKey, Header, Validation };
+use jsonwebtoken::{
+  decode,
+  encode,
+  DecodingKey,
+  EncodingKey,
+  Header,
+  Validation,
+};
 use serde::{ Deserialize, Serialize };
 use dotenv_codegen::dotenv as dotenv_codegen;
 
@@ -28,7 +35,9 @@ pub fn get_token(username: &String) -> std::string::String {
     username: username.to_string(),
   };
 
-  let token = match encode(&Header::default(), &my_claims, &EncodingKey::from_secret(key)) {
+  let token = match
+    encode(&Header::default(), &my_claims, &EncodingKey::from_secret(key))
+  {
     Ok(t) => t,
     Err(_) => panic!(),
   };
