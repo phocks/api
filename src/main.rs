@@ -1,8 +1,10 @@
 #![allow(unused)]
 
 mod get_token;
-// mod email;
 use get_token::{ get_token };
+
+mod database;
+use database::{ connect };
 
 use actix_cors::Cors;
 use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
@@ -23,6 +25,8 @@ async fn root() -> impl Responder {
         "02": "If you're seeing this message it means the API is working.",
         "03": "Use some of the other endpoints to get some different functionality.",
     });
+
+  connect();
 
   HttpResponse::Ok().json(return_data)
 }
