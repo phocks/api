@@ -14,12 +14,13 @@ const DB_NAME: &str = "bakeries_db";
 async fn run() -> Result<(), DbErr> {
   let db = Database::connect(DATABASE_URL).await?;
 
-  let happy_bakery = bakery::ActiveModel {
-    name: ActiveValue::Set("Happy Bakery".to_owned()),
-    profit_margin: ActiveValue::Set(0.0),
-    ..Default::default()
-  };
-  let res = Bakery::insert(happy_bakery).exec(&db).await?;
+  // -- Sample code to create an entity --
+  // let happy_bakery = bakery::ActiveModel {
+  //   name: ActiveValue::Set("Happy Bakery".to_owned()),
+  //   profit_margin: ActiveValue::Set(0.0),
+  //   ..Default::default()
+  // };
+  // let res = Bakery::insert(happy_bakery).exec(&db).await?;
 
   Ok(())
 }
