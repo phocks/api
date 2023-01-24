@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-mod entities; 
+mod entities;
 
 mod get_token;
 use get_token::{ get_token };
@@ -29,6 +29,8 @@ async fn root() -> impl Responder {
     });
 
   connect();
+
+ 
 
   HttpResponse::Ok().json(return_data)
 }
@@ -62,6 +64,11 @@ async fn main() -> std::io::Result<()> {
   dotenv().ok();
 
   println!("Attempting to listen on http://localhost:3000");
+
+  use bcrypt::{ DEFAULT_COST, hash, verify };
+
+  let hashed = hash("hunter2", DEFAULT_COST).unwrap();
+  let valid = verify("hunter2", &hashed).unwrap();
 
   HttpServer::new(|| {
     App::new()
