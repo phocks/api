@@ -24,3 +24,4 @@ sea-orm = { version = "^0.9.0", features = [
     "macros",
 ] }
 futures = "0.3.21"
+bcrypt = "0.13"
