@@ -6,7 +6,7 @@ mod get_token;
 use get_token::{ get_token };
 
 mod database;
-use database::{ connect };
+use database::{ connect, insert_blocking };
 
 use actix_cors::Cors;
 use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
@@ -72,8 +72,6 @@ async fn user_register(req_body: web::Json<LoginData>) -> impl Responder {
   // let username: String = query.username.to_string();
   // let token: String = get_token(&username);
 
- 
-
   let username: String = req_body.username.to_string();
   let password: String = req_body.password.to_string();
 
@@ -89,8 +87,9 @@ async fn user_register(req_body: web::Json<LoginData>) -> impl Responder {
 
   println!("Hashed password: {}", hashed);
   println!("Is password valid? {}", valid);
+  insert_blocking(&username, &hashed);
 
-   let return_data = json!({
+  let return_data = json!({
     "username": username,
     "hash": hashed,
     });
