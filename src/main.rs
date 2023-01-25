@@ -72,10 +72,7 @@ async fn user_register(req_body: web::Json<LoginData>) -> impl Responder {
   // let username: String = query.username.to_string();
   // let token: String = get_token(&username);
 
-  // let return_data = json!({
-  //   "username": username,
-  //   "jwt": token,
-  //   });
+ 
 
   let username: String = req_body.username.to_string();
   let password: String = req_body.password.to_string();
@@ -93,7 +90,12 @@ async fn user_register(req_body: web::Json<LoginData>) -> impl Responder {
   println!("Hashed password: {}", hashed);
   println!("Is password valid? {}", valid);
 
-  HttpResponse::Ok().body("User registered")
+   let return_data = json!({
+    "username": username,
+    "hash": hashed,
+    });
+
+  HttpResponse::Ok().json(return_data)
 }
 
 #[actix_web::main]
