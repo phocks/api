@@ -16,6 +16,8 @@ use serde::{ Deserialize };
 use dotenv::dotenv;
 use std::env;
 
+use bcrypt::{ DEFAULT_COST, hash, verify };
+
 #[get("/")]
 async fn root() -> impl Responder {
   let email: String = String::from("no-reply@gmail.com");
@@ -29,8 +31,6 @@ async fn root() -> impl Responder {
     });
 
   connect();
-
- 
 
   HttpResponse::Ok().json(return_data)
 }
@@ -59,16 +59,48 @@ async fn echo(req_body: String) -> impl Responder {
   HttpResponse::Ok().body(req_body)
 }
 
+#[derive(Deserialize, Debug)]
+struct LoginData {
+  // JSON fields go here
+  username: String,
+  password: String,
+}
+
+#[post("/user/register")]
+async fn user_register(req_body: web::Json<LoginData>) -> impl Responder {
+  println!("data: {:?}", req_body);
+  // let username: String = query.username.to_string();
+  // let token: String = get_token(&username);
+
+  // let return_data = json!({
+  //   "username": username,
+  //   "jwt": token,
+  //   });
+
+  let username: String = req_body.username.to_string();
+  let password: String = req_body.password.to_string();
+
+  let hashed = match hash(&password, DEFAULT_COST) {
+    Ok(h) => h,
+    Err(e) => panic!("Error hashing password: {}", e),
+  };
+
+  let valid = match verify(&password, &hashed) {
+    Ok(v) => v,
+    Err(e) => panic!("Error verifying password: {}", e),
+  };
+
+  println!("Hashed password: {}", hashed);
+  println!("Is password valid? {}", valid);
+
+  HttpResponse::Ok().body("User registered")
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
   dotenv().ok();
 
   println!("Attempting to listen on http://localhost:3000");
-
-  use bcrypt::{ DEFAULT_COST, hash, verify };
-
-  let hashed = hash("hunter2", DEFAULT_COST).unwrap();
-  let valid = verify("hunter2", &hashed).unwrap();
 
   HttpServer::new(|| {
     App::new()
@@ -76,6 +108,7 @@ async fn main() -> std::io::Result<()> {
       .service(root)
       .service(echo)
       .service(get_jwt)
+      .service(user_register)
   })
     .bind(("0.0.0.0", 3000))?
     .run().await
