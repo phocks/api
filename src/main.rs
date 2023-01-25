@@ -17,6 +17,7 @@ use dotenv::dotenv;
 use std::env;
 
 use bcrypt::{ DEFAULT_COST, hash, verify };
+const REDUCED_COST: u32 = 8;
 
 #[get("/")]
 async fn root() -> impl Responder {
@@ -75,7 +76,7 @@ async fn user_register(req_body: web::Json<LoginData>) -> impl Responder {
   let username: String = req_body.username.to_string();
   let password: String = req_body.password.to_string();
 
-  let hashed = match hash(&password, DEFAULT_COST) {
+  let hashed = match hash(&password, REDUCED_COST) {
     Ok(h) => h,
     Err(e) => panic!("Error hashing password: {}", e),
   };
