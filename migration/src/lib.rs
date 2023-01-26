@@ -3,6 +3,7 @@ pub use sea_orm_migration::prelude::*;
 // Add each migration file as a module
 mod m20220101_000001_create_bakery_table;
 mod m20220101_000002_create_chef_table;
+mod m20220101_000003_create_users_table;
 
 pub struct Migrator;
 
@@ -12,7 +13,8 @@ impl MigratorTrait for Migrator {
     vec![
       // Define the order of migrations.
       Box::new(m20220101_000001_create_bakery_table::Migration),
-      Box::new(m20220101_000002_create_chef_table::Migration)
+      Box::new(m20220101_000002_create_chef_table::Migration),
+      Box::new(m20220101_000003_create_users_table::Migration)
     ]
   }
 }
