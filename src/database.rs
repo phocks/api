@@ -12,15 +12,45 @@ const DATABASE_URL: &str = "sqlite:./db/sqlite.db?mode=rwc";
 const DB_NAME: &str = "users";
 
 async fn run() -> Result<(), DbErr> {
-  let db = Database::connect(DATABASE_URL).await?;
+  let db = match Database::connect(DATABASE_URL).await {
+    Ok(db) => db,
+    Err(err) => {
+      println!("$$$$$$$$$$$$$$$$$$$$$$$$$$ {}", err);
+      return Err(err);
+    }
+  };
 
-  // -- Sample code to create an entity --
-  // let happy_bakery = bakery::ActiveModel {
-  //   name: ActiveValue::Set("Happy Bakery".to_owned()),
-  //   profit_margin: ActiveValue::Set(0.0),
-  //   ..Default::default()
-  // };
-  // let res = Bakery::insert(happy_bakery).exec(&db).await?;
+  // let db = &(match db.get_database_backend() {
+  //   DbBackend::MySql => {
+  //     db.execute(
+  //       Statement::from_string(
+  //         db.get_database_backend(),
+  //         format!("CREATE DATABASE IF NOT EXISTS `{}`;", DB_NAME)
+  //       )
+  //     ).await?;
+
+  //     let url = format!("{}/{}", DATABASE_URL, DB_NAME);
+  //     Database::connect(&url).await?
+  //   }
+  //   DbBackend::Postgres => {
+  //     db.execute(
+  //       Statement::from_string(
+  //         db.get_database_backend(),
+  //         format!("DROP DATABASE IF EXISTS \"{}\";", DB_NAME)
+  //       )
+  //     ).await?;
+  //     db.execute(
+  //       Statement::from_string(
+  //         db.get_database_backend(),
+  //         format!("CREATE DATABASE \"{}\";", DB_NAME)
+  //       )
+  //     ).await?;
+
+  //     let url = format!("{}/{}", DATABASE_URL, DB_NAME);
+  //     Database::connect(&url).await?
+  //   }
+  //   DbBackend::Sqlite => db,
+  // });
 
   Ok(())
 }
