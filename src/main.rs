@@ -76,18 +76,16 @@ async fn user_register(req_body: web::Json<LoginData>) -> impl Responder {
   let username: String = req_body.username.to_string();
   let password: String = req_body.password.to_string();
 
-  let hashed = match hash(&password, REDUCED_COST) {
-    Ok(h) => h,
-    Err(e) => panic!("Error hashing password: {}", e),
-  };
+  let hashed = hash(&password, REDUCED_COST).expect("Hashing error!");
 
-  let valid = match verify(&password, &hashed) {
-    Ok(v) => v,
-    Err(e) => panic!("Error verifying password: {}", e),
-  };
+  // let valid = match verify(&password, &hashed) {
+  //   Ok(v) => v,
+  //   Err(e) => panic!("Error verifying password: {}", e),
+  // };
+  // println!("Is password valid? {}", valid);
 
   println!("Hashed password: {}", hashed);
-  println!("Is password valid? {}", valid);
+
   insert_blocking(&username, &hashed);
 
   let return_data = json!({
