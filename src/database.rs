@@ -8,49 +8,11 @@ use sea_orm::*;
 // the whole database URL string follows the following format:
 // "protocol://username:password@host:port/database"
 // We put the database name (that last bit) in a separate variable simply for convenience.
-const DATABASE_URL: &str = "sqlite:./db/sqlite.db?mode=rwc";
+const DATABASE_URL: &str = "sqlite:./sqlite.db?mode=rwc";
 const DB_NAME: &str = "users";
 
 async fn run() -> Result<(), DbErr> {
-  let db = match Database::connect(DATABASE_URL).await {
-    Ok(db) => db,
-    Err(err) => {
-      println!("$$$$$$$$$$$$$$$$$$$$$$$$$$ {}", err);
-      return Err(err);
-    }
-  };
-
-  // let db = &(match db.get_database_backend() {
-  //   DbBackend::MySql => {
-  //     db.execute(
-  //       Statement::from_string(
-  //         db.get_database_backend(),
-  //         format!("CREATE DATABASE IF NOT EXISTS `{}`;", DB_NAME)
-  //       )
-  //     ).await?;
-
-  //     let url = format!("{}/{}", DATABASE_URL, DB_NAME);
-  //     Database::connect(&url).await?
-  //   }
-  //   DbBackend::Postgres => {
-  //     db.execute(
-  //       Statement::from_string(
-  //         db.get_database_backend(),
-  //         format!("DROP DATABASE IF EXISTS \"{}\";", DB_NAME)
-  //       )
-  //     ).await?;
-  //     db.execute(
-  //       Statement::from_string(
-  //         db.get_database_backend(),
-  //         format!("CREATE DATABASE \"{}\";", DB_NAME)
-  //       )
-  //     ).await?;
-
-  //     let url = format!("{}/{}", DATABASE_URL, DB_NAME);
-  //     Database::connect(&url).await?
-  //   }
-  //   DbBackend::Sqlite => db,
-  // });
+  let db = Database::connect(DATABASE_URL).await?;
 
   Ok(())
 }
