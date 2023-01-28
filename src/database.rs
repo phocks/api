@@ -3,11 +3,6 @@ use futures::executor::block_on;
 use crate::entities::{ prelude::*, * };
 use sea_orm::*;
 
-// Change this according to your database implementation,
-// or supply it as an environment variable.
-// the whole database URL string follows the following format:
-// "protocol://username:password@host:port/database"
-// We put the database name (that last bit) in a separate variable simply for convenience.
 const DATABASE_URL: &str = "sqlite:./sqlite.db?mode=rwc";
 const DB_NAME: &str = "users";
 
@@ -22,8 +17,6 @@ async fn insert_new_user(username: &str, password: &str) -> Result<(), DbErr> {
 
   println!("Attempting to insert new user: {}", username);
 
-  // -- Sample code to create an entity --
-  // TODO: fix make no null
   let new_user = users::ActiveModel {
     username: ActiveValue::Set(username.to_string()),
     password_hash: ActiveValue::Set(password.to_string()),

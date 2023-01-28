@@ -16,25 +16,29 @@ use serde::{ Deserialize };
 use dotenv::dotenv;
 use std::env;
 
+mod routes;
+use routes::home;
+
+
 use bcrypt::{ DEFAULT_COST, hash, verify };
 const REDUCED_COST: u32 = 8;
 
-#[get("/")]
-async fn root() -> impl Responder {
-  let email: String = String::from("no-reply@gmail.com");
-  let token: String = get_token(&email);
+// #[get("/")]
+// async fn root() -> impl Responder {
+//   let email: String = String::from("no-reply@gmail.com");
+//   let token: String = get_token(&email);
 
-  let return_data =
-    json!({
-        "01": "Hello World!",
-        "02": "If you're seeing this message it means the API is working.",
-        "03": "Use some of the other endpoints to get some different functionality.",
-    });
+//   let return_data =
+//     json!({
+//         "01": "Hello World!",
+//         "02": "If you're seeing this message it means the API is working.",
+//         "03": "Use some of the other endpoints to get some different functionality.",
+//     });
 
-  connect();
+//   connect();
 
-  HttpResponse::Ok().json(return_data)
-}
+//   HttpResponse::Ok().json(return_data)
+// }
 
 #[derive(Deserialize, Debug)]
 struct MyQuery {
@@ -105,7 +109,7 @@ async fn main() -> std::io::Result<()> {
   HttpServer::new(|| {
     App::new()
       .wrap(Cors::permissive())
-      .service(root)
+      .service(home)
       .service(echo)
       .service(get_jwt)
       .service(user_register)
