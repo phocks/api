@@ -18,7 +18,7 @@ struct Claims {
   username: String,
 }
 
-pub fn get_token(username: &String) -> std::string::String {
+pub fn get_token_for_username(username: &String) -> std::string::String {
   let bytes_secret = dotenv_codegen!("SECRET").as_bytes();
 
   let key = bytes_secret;
