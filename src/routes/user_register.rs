@@ -1,8 +1,7 @@
-use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
+use actix_web::{ post, web, HttpResponse, Responder };
 use serde_json::json;
 use serde::Deserialize;
 
-use crate::tokens;
 use crate::database;
 
 const REDUCED_COST: u32 = 8;
@@ -17,8 +16,6 @@ struct LoginData {
 #[post("/user/register")]
 async fn user_register(req_body: web::Json<LoginData>) -> impl Responder {
   println!("data: {:?}", req_body);
-  // let username: String = query.username.to_string();
-  // let token: String = get_token(&username);
 
   let username: String = req_body.username.to_string();
   let password: String = req_body.password.to_string();

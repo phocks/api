@@ -7,7 +7,7 @@ mod database;
 
 // Actix web imports
 use actix_cors::Cors;
-use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
+use actix_web::{ App, HttpServer };
 
 // Load our API routes
 mod routes;
