@@ -4,20 +4,19 @@
 mod entities;
 mod tokens;
 mod database;
-mod routes;
 
+// Actix web imports
 use actix_cors::Cors;
 use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
-use serde_json::json;
-use serde::Deserialize;
+
+// Load our API routes
+mod routes;
 
 use dotenv::dotenv;
-use bcrypt;
-
-
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+  // Load local environment variables from .env file
   dotenv().ok();
 
   println!("Attempting to listen on http://localhost:3000");
