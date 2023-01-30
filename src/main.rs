@@ -31,9 +31,3 @@ async fn main() -> std::io::Result<()> {
     .bind(("0.0.0.0", 3000))?
     .run().await
 }
-
-// let valid = match verify(&password, &hashed) {
-//   Ok(v) => v,
-//   Err(e) => panic!("Error verifying password: {}", e),
-// };
-// println!("Is password valid? {}", valid);
