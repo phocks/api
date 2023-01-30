@@ -25,8 +25,8 @@ async fn main() -> std::io::Result<()> {
     App::new()
       .wrap(Cors::permissive())
       .service(routes::home)
-      .service(routes::get_jwt)
-      .service(routes::user_register)
+      .service(routes::user::login)
+      .service(routes::user::register)
   })
     .bind(("0.0.0.0", 3000))?
     .run().await
