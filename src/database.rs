@@ -33,14 +33,11 @@ pub async fn find_user(username: &str, password: &str) -> Result<(), DbErr> {
     let is_valid = bcrypt::verify(password, &hash).unwrap();
 
     if is_valid {
-      println!("User {} is valid!", username);
       return Ok(());
     } else {
-      println!("User {} is not valid!", username);
       return Err(DbErr::Custom("User is not valid".to_string()));
     }
   } else {
-    println!("User {} does not exist!", username);
     return Err(DbErr::Custom("User is not valid".to_string()));
   }
 }
