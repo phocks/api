@@ -27,7 +27,7 @@ async fn login(req_body: web::Json<LoginFields>) -> impl Responder {
   if is_user_valid {
     println!("User {} is valid!", username);
 
-    let token: String = tokens::get_token_for_username(&username);
+    let token: Option<String> = tokens::get_token_for_username(&username);
 
     let return_data = json!({
     "username": username,

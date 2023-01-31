@@ -11,7 +11,7 @@ struct Claims {
   username: String,
 }
 
-pub fn get_token_for_username(username: &String) -> std::string::String {
+pub fn get_token_for_username(username: &String) -> Option<std::string::String> {
   let bytes_secret = dotenv_codegen!("SECRET").as_bytes();
 
   let key = bytes_secret;
@@ -35,5 +35,5 @@ pub fn get_token_for_username(username: &String) -> std::string::String {
     Err(_) => panic!(),
   };
 
-  return token;
+  return Some(token);
 }
