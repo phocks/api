@@ -11,6 +11,7 @@ use actix_web::{ App, HttpServer };
 
 // Load our API routes
 mod routes;
+mod alphabet;
 
 use dotenv::dotenv;
 
