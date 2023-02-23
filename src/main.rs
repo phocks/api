@@ -7,11 +7,10 @@ mod database;
 
 // Actix web imports
 use actix_cors::Cors;
-use actix_web::{ App, HttpServer };
+use actix_web::{ web, App, HttpServer };
 
 // Load our API routes
 mod routes;
-// mod alphabet;
 
 use dotenv::dotenv;
 
@@ -26,8 +25,12 @@ async fn main() -> std::io::Result<()> {
     App::new()
       .wrap(Cors::permissive())
       .service(routes::home)
-      .service(routes::user::login)
-      .service(routes::user::register)
+      .service(
+        web
+          ::scope("/v1")
+          .service(routes::user::login)
+          .service(routes::user::register)
+      )
   })
     .bind(("0.0.0.0", 3000))?
     .run().await

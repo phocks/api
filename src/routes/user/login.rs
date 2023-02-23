@@ -14,7 +14,7 @@ struct LoginFields {
 #[post("/user/login")]
 async fn login(req_body: web::Json<LoginFields>) -> impl Responder {
   println!("Attempting to login user: {}", req_body.username);
-  // let email: String = String::from("no-reply@gmail.com");
+
   let username: String = req_body.username.to_string();
   let password: String = req_body.password.to_string();
 
