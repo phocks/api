@@ -42,8 +42,12 @@ pub async fn find_user(username: &str, password: &str) -> Result<(), DbErr> {
   }
 }
 
-pub fn insert_blocking(username: &str, password: &str) {
+pub fn insert_blocking(username: &str, password: &str) -> Option<()> {
   if let Err(err) = block_on(insert_new_user(username, password)) {
-    panic!("{}", err);
+    // panic!("{}", err);
+    println!("{}", err);
+    return None;
   }
+
+  Some(())
 }
