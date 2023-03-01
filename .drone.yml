@@ -1,7 +1,9 @@
-jobs:
-  build:
-    docker:
-      - image: cimg/rust:1.45.0
-    steps:
-      - checkout
-      - run: cargo --version
+kind: pipeline
+name: default
+
+steps:
+- name: test
+  image: cimg/rust:1.45.0
+  commands:
+  - cargo build --verbose --all
+  - cargo test --verbose --all
