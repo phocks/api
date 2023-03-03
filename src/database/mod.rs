@@ -22,13 +22,25 @@ async fn insert_new_user(username: &str, password: &str) -> Result<(), DbErr> {
 
 // Login function
 pub async fn find_user(username: &str, password: &str) -> Result<(), DbErr> {
+  println!("find_user running {}", username);
   let db = Database::connect(DATABASE_URL).await?;
 
-  let user: Option<users::Model> = Users::find()
-    .filter(users::Column::Username.eq(username))
-    .one(&db).await?;
+  println!("db {:?}", db);
+
+  let user: Option<users::Model> = match
+    Users::find().filter(users::Column::Username.eq(username)).one(&db).await
+  {
+    Ok(result) => result,
+    Err(err) => {
+      println!("{:?}", err);
+      return Err(DbErr::from(err));
+    } // Convert the error to the DbErr enum
+  };
+
+  println!("User found {:?}", user);
 
   if let Some(user) = user {
+    println!("User found");
     let hash = user.password_hash;
     let is_valid = bcrypt::verify(password, &hash).unwrap();
 
@@ -38,6 +50,7 @@ pub async fn find_user(username: &str, password: &str) -> Result<(), DbErr> {
       return Err(DbErr::Custom("User is not valid".to_string()));
     }
   } else {
+    println!("nothing");
     return Err(DbErr::Custom("User is not valid".to_string()));
   }
 }
