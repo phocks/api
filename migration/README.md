@@ -1,5 +1,9 @@
 # Running Migrator CLI
 
+## Commands added by Josh
+
+`DATABASE_URL=sqlite:./sqlite.db sea-orm-cli migrate refresh` <- remove and replace
+
 - Generate a new migration file
     ```sh
     cargo run -- migrate generate MIGRATION_NAME

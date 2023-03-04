@@ -21,8 +21,9 @@ async fn register(req_body: web::Json<RegisterFields>) -> impl Responder {
   let username: String = req_body.username.to_string();
   let password: String = req_body.password.to_string();
   let hashed = bcrypt::hash(&password, REDUCED_COST).expect("Hashing error!");
+  let nano_id = nanoid!();
 
-  match database::insert_blocking(&username, &hashed) {
+  match database::insert_blocking(&username, &hashed, &nano_id) {
     Some(()) => {
       println!("User inserted in DB");
 
