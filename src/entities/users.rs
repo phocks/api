@@ -7,10 +7,12 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
-    // pub nano_id: String,
+    pub nano_id: String,
     pub username: String,
     pub password_hash: String,
     pub email: Option<String>,
+    #[sea_orm(column_name = "created_at", default = "now()")]
+    pub created_at: chrono::DateTime<chrono::Utc>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
