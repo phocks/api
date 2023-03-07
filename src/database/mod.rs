@@ -4,7 +4,11 @@ use chrono::Utc;
 use crate::entities::{ prelude::*, * };
 use sea_orm::*;
 
-const DATABASE_URL: &str = "sqlite:./sqlite.db?mode=rwc";
+
+// use std::env;
+
+// const DATABASE_URL: &str = "sqlite:./sqlite.db?mode=rwc";
+const DATABASE_URL: &str = dotenv!("DB_URL");
 
 async fn insert_new_user(username: &str, password: &str, nano_id: &str) -> Result<(), DbErr> {
   let db = Database::connect(DATABASE_URL).await?;

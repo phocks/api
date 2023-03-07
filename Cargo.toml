@@ -20,6 +20,7 @@ actix-cors = "0.6.4"
 # lettre = "0.10.1"
 sea-orm = { version = "^0.9.0", features = [
     "sqlx-sqlite",
+    "sqlx-postgres",
     "runtime-async-std-native-tls",
     "macros",
 ] }

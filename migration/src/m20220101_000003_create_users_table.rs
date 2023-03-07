@@ -26,7 +26,7 @@ impl MigrationTrait for Migration {
         .col(ColumnDef::new(Users::Username).string().unique_key().not_null())
         .col(ColumnDef::new(Users::PasswordHash).string().not_null())
         .col(ColumnDef::new(Users::Email).string())
-        .col(ColumnDef::new(Users::CreatedAt).string())
+        .col(ColumnDef::new(Users::CreatedAt).timestamp_with_time_zone())
         .to_owned()
     ).await
   }

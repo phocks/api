@@ -14,6 +14,9 @@ mod routes;
 
 use dotenv::dotenv;
 
+#[macro_use]
+extern crate dotenv_codegen;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
   // Load local environment variables from .env file
