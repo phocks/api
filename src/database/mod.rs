@@ -4,13 +4,16 @@ use chrono::Utc;
 use crate::entities::{ prelude::*, * };
 use sea_orm::*;
 
-
 // use std::env;
 
 // const DATABASE_URL: &str = "sqlite:./sqlite.db?mode=rwc";
 const DATABASE_URL: &str = dotenv!("DB_URL");
 
-async fn insert_new_user(username: &str, password: &str, nano_id: &str) -> Result<(), DbErr> {
+async fn insert_new_user(
+  username: &str,
+  password: &str,
+  nano_id: &str
+) -> Result<(), DbErr> {
   let db = Database::connect(DATABASE_URL).await?;
 
   println!("Attempting to insert new user: {}", username);
@@ -29,6 +32,7 @@ async fn insert_new_user(username: &str, password: &str, nano_id: &str) -> Resul
 
 // Login function
 pub async fn find_user(username: &str, password: &str) -> Result<(), DbErr> {
+  println!("{}", DATABASE_URL);
   println!("find_user running {}", username);
   let db = Database::connect(DATABASE_URL).await?;
 
@@ -62,7 +66,11 @@ pub async fn find_user(username: &str, password: &str) -> Result<(), DbErr> {
   }
 }
 
-pub fn insert_blocking(username: &str, password: &str, nano_id: &str) -> Option<()> {
+pub fn insert_blocking(
+  username: &str,
+  password: &str,
+  nano_id: &str
+) -> Option<()> {
   if let Err(err) = block_on(insert_new_user(username, password, nano_id)) {
     // panic!("{}", err);
     println!("{}", err);
