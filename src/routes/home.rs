@@ -15,7 +15,7 @@ pub async fn home() -> impl Responder {
         "02": "If you're seeing this message it means the API is working.",
         "03": "Use some of the other endpoints to get some different functionality.",
         "04": "Below are just a few test strings",
-        "05": "And this sentence is to test the CI...",
+        "05": "So why is it only executing the first one?",
         "random_id": id,
         "random_name": generator.next().unwrap(),
     });
