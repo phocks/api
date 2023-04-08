@@ -28,3 +28,5 @@ futures = "0.3.21"
 bcrypt = "0.13"
 nanoid = "0.4.0"
 names = "0.14.0"
+async-graphql = { version = "5.0.7", features = ["chrono"] }
+async-graphql-actix-web = "5.0.7"
