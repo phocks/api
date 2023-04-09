@@ -20,8 +20,6 @@ use schema::*;
 
 type SchemaType = Schema<QueryRoot, EmptyMutation, EmptySubscription>;
 
-use juniper::http::{ graphiql::graphiql_source, GraphQLRequest };
-
 // Load our API routes
 mod routes;
 
