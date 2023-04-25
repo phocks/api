@@ -107,6 +107,10 @@ pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
+  async fn hello(&self) -> String {
+    "Hello GraphQL".to_owned()
+  }
+
   async fn hero<'a>(
     &self,
     ctx: &Context<'a>,

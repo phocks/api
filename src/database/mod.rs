@@ -3,10 +3,8 @@ use chrono::Utc;
 
 use crate::entities::{ prelude::*, * };
 use sea_orm::*;
+use dotenv_codegen::dotenv;
 
-// use std::env;
-
-// const DATABASE_URL: &str = "sqlite:./sqlite.db?mode=rwc";
 const DATABASE_URL: &str = dotenv!("DB_URL");
 
 async fn insert_new_user(
